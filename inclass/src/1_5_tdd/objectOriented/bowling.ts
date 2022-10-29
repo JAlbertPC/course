@@ -1,5 +1,4 @@
 export class BowlingGame {
-
     private rolls: number[];
     private finalScore: number;
 

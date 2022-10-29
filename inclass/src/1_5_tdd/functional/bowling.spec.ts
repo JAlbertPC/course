@@ -1,65 +1,64 @@
-import {createGame, Game} from "./bowling"
+import { createGame, Game } from "./bowling";
 
 describe('A bowling game', () => {
 
-    let game: Game
+  let game: Game
+  beforeEach(() => {
+    game = createGame()
+  })
 
-    beforeEach(() => {
-        game = createGame()
-    })
+  it('can play a gutter game', () => {
+    game = rollMany(game, 20, 0)
 
-    // beforeEach handles the initialization of game.
-    /*it('should invoke create Game', function () {
-        game = createGame();
-    });*/
+    expect( game.score() ).toBe( 0 )
+  })
 
-    it('should roll a ball', function () {
-        game = game.roll(0);
-    });
+  it('can roll a game with all ones', () => {
+    game = rollMany(game, 20, 1)
 
-    //Fill the game with a horrible game where all the rolls are 0
-    it('should do a gutter game', function () {
-        game = rollMany(game, 20, 0);
-        expect(game.score()).toBe(0)
-    });
+    expect( game.score() ).toBe( 20 )
+  });
 
-    it('should make a game where all rolls are ones.', function () {
-        game = rollMany(game, 20, 1)
-        expect(game.score()).toBe(20)
-    });
+  it('can roll a spare', () => {
+    game = rollSpare(game) 
+          .roll(3) 
+    
+    game = rollMany(game, 17, 0)
 
-    it('should make a spare', function () {
-        game = rollSpare(game);
-        game = rollMany(game, 17, 0);
-        expect(game.score()).toBe(20);
-    });
+    expect( game.score() ).toBe(16)
+  });
 
-    it('should make a strike', function () {
-        game = rollStrike(game);
-        game = rollMany(game, 16, 0);
-        expect(game.score()).toBe(14);
-    });
+  it('can roll a strike', () => {
+    game = rollStrike(game)
+      .roll(1)
+      .roll(1)
+
+    game = rollMany(game, 16, 0)
+
+    expect( game.score() ).toBe(14)
+  });
+
+  it('can roll perfect game', () => {
+    game = rollMany(game, 12, 10)
+
+    expect( game.score() ).toBe(300)
+  });
 
 });
 
-function rollMany(game: Game, rolls: number, scoreInRolls: number) {
-    for (let pins = 0; pins < rolls; pins++) {
-        game = game.roll(scoreInRolls);
-    }
-    return game;
+function rollStrike(game: Game) {
+  return game.roll(10);
 }
 
 function rollSpare(game: Game) {
-    game = game.roll(5);
-    game = game.roll(5);
-    game = game.roll(5);
-    return game;
+  return game.roll(5)
+    .roll(5);
 }
 
-function rollStrike(game: Game) {
-    game = game.roll(10);
-    game = game.roll(1);
-    game = game.roll(1);
-    return game;
+function rollMany(game: Game, rolls: number, pins: number) {
+  for (let i = 0; i < rolls; i++) {
+    game = game.roll(pins);
+  }
+  return game;
 }
 
