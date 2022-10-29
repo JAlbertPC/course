@@ -1,57 +1,60 @@
 export class BowlingGame {
+    private rolls: number[];
+    private finalScore: number;
 
-  private rolls: number[]
-  private score: number
+    constructor() {
+        this.rolls = [];
+        this.finalScore = 0;
+    }
 
-  constructor(){
-      this.rolls = new Array<number>()
-      this.score = 0
-  }
+    roll(pinsKnockedDown) {
+        this.rolls.push(pinsKnockedDown);
+    }
 
-  Roll(pin: number): void{
-      this.rolls.push(pin)
-  }
 
-  GetScore(): number{
-      let i = 0
-      for (let frame = 0; frame < 10; frame++) {
-          if(isStrike(this.rolls, i)){
-              this.score += 10 + nextTwoBallsForStrike(this.rolls, i)
-              i++;
-              continue;
+    score() {
+        this.calculateScore();
+        return this.finalScore;
+    }
 
-          }
-          if(isSpare(this.rolls, i)){
-              this.score += 10 + nextBallForSpare(this.rolls, i)
-              i += 2
+    private calculateScore() {
+        const rolls = this.rolls;
+        let firstInFrame = 0;
+        let score = 0;
+        for (let frame = 0; frame < 10; frame++) {
 
-          }else{
-              this.score += ballsInFrame(this.rolls, i)
-              i += 2
-
-          }
-      }
-
-      return this.score
-  }
+            if (isStrike(rolls, firstInFrame)) {
+                score += 10 + nextTwoBallsForStrike(rolls, firstInFrame, score);
+                firstInFrame++;
+            } else if (isSpare(rolls, firstInFrame)) {
+                score += 10 + nextBallForSpare(rolls, firstInFrame);
+                firstInFrame += 2;
+            } else {
+                score = ballsInFrame(score, rolls, firstInFrame);
+                firstInFrame += 2;
+            }
+        }
+        this.finalScore = score;
+    }
 }
 
-const ballsInFrame = (rolls: number[], firstInFrame: number) =>{
-  return rolls[firstInFrame] + rolls[firstInFrame+1]
+function isStrike(rolls: any[], firstInFrame: number) {
+    return rolls[firstInFrame] == 10;
 }
 
-const nextBallForSpare = (rolls: number[], firstInFrame: number) =>{
-  return rolls[firstInFrame+2]
+function isSpare(rolls: any[], firstInFrame: number) {
+    return rolls[firstInFrame] + rolls[firstInFrame + 1] == 10;
 }
 
-const nextTwoBallsForStrike = (rolls: number[], firstInFrame: number) =>{
-  return rolls[firstInFrame+1] + rolls[firstInFrame+2]
+function nextTwoBallsForStrike(rolls: any[], firstInFrame: number, finalScore: number) {
+    return rolls[firstInFrame + 1] + rolls[finalScore + 2];
 }
 
-function isStrike(rolls: number[], firstInFrame: number) {
-  return rolls[firstInFrame] == 10
+function nextBallForSpare(rolls: any[], firstInFrame: number) {
+    return rolls[firstInFrame + 2];
 }
 
-function isSpare(rolls: number[], i: number) {
-  return rolls[i] + rolls[i + 1] == 10
+function ballsInFrame(finalScore: number, rolls: any[], firstInFrame: number) {
+    finalScore += rolls[firstInFrame] + rolls[firstInFrame + 1];
+    return finalScore;
 }

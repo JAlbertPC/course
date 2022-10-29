@@ -1,4 +1,4 @@
-
+const fetch = require("node-fetch")
 const URL = 'https://clean-answers.herokuapp.com/'
 // const URL = 'http://localhost:3000/'
 export const fetchAnswer = async (excercise: string, answer: string) => {

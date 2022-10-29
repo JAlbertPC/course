@@ -8,10 +8,10 @@ export const printUnorderedPairs = (arrayA: number[], arrayB: number[]) => {
 
 const helper = (a: number, arrayB: number[]) => {
     let i = 0
-    while (i<arrayB.length) {
+    while (i < arrayB.length) {
         if (a > arrayB[i]) console.log(a, arrayB[i])
         i++
     }
 }
 
-export const ANSWER_C = 'O(1)'
+export const ANSWER_C = 'O(ab)'

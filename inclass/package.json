@@ -4,12 +4,13 @@
   "description": "All course examples",
   "main": "index.js",
   "scripts": {
-    "practice": "./scripts/run-file.sh",
+    "practice": "./scripts/run-file.sh bigO",
     "test": "jest"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "node-fetch": "^2.6.7",
     "ts-node": "^10.9.1",
     "typescript": "^4.7.4"
   },
