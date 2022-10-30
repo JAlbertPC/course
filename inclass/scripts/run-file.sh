@@ -1,6 +1,7 @@
 echo "---------------------------------------------"
-PRACTICE_TYPE=$(node -p "require('./practice.config.json')['$1'].type")
-PRACTICE_FOLDER=$(node -p "require('./practice.config.json')['$1'].src")
+PRACTICE_TYPE=$(node -p "require('./practice.config.json').$1.type")
+PRACTICE_FOLDER=$(node -p "require('./practice.config.json').$1.src")
+
 
 CODE_TYPE="code"
 TEST_GLOBAL_TYPE="test-global"
